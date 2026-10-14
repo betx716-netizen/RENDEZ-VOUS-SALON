@@ -1,0 +1,6 @@
+{
+  "name": "RDV Salon - Gestion & Réservation",
+  "description": "Plateforme SaaS complète de gestion de rendez-vous pour salons de coiffure et instituts de beauté en Côte d'Ivoire. Réservation en ligne, rappels WhatsApp, agenda d'équipe et suivi clientèle en FCFA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
