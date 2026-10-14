@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { ArrowRight, Scissors, MailCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { accountRepository } from '../lib/repository';
+import { isSupabaseConfigured } from '../lib/supabase';
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const { signUp, user, salon, loading: authLoading, createSalonForCurrentUser } = useAuth();
+  const { signUp, signOut, user, salon, loading: authLoading, isDemoMode, createSalonForCurrentUser } = useAuth();
   const { success, error } = useToast();
+  // Une visite du salon de démo ne doit pas empêcher de créer un vrai salon
+  const quitteDemo = isDemoMode && isSupabaseConfigured();
+  useEffect(() => {
+    if (quitteDemo) signOut();
+  }, [quitteDemo]);
   // Compte déjà connecté mais sans salon : on ne demande que les infos du salon
-  const completion = !!user && !salon;
+  const completion = !!user && !salon && !quitteDemo;
   const [emailEnvoye, setEmailEnvoye] = useState<string | null>(null);
 
   const [email, setEmail] = useState('');
@@ -92,7 +98,7 @@ export const RegisterPage: React.FC = () => {
     }
   };
 
-  if (!authLoading && user && salon) {
+  if (!authLoading && !quitteDemo && user && salon) {
     return <Navigate to="/app" replace />;
   }
 
