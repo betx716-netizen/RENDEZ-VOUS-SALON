@@ -1,0 +1,259 @@
+@import "./styles/tokens.css";
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-accent: var(--accent);
+  --color-gold: var(--gold);
+  --color-success: var(--success);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+  --color-dark-section: var(--dark-section);
+  --color-dark-section-text: var(--dark-section-text);
+  --color-surface-cream: var(--surface-cream);
+  --color-surface-cream-alt: var(--surface-cream-alt);
+
+  /* Aplats de la palette néo-brutale */
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-lime: var(--lime);
+  --color-candy: var(--candy);
+  --color-sun: var(--sun);
+
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+
+  --shadow-hard-sm: var(--shadow-sm);
+  --shadow-hard-md: var(--shadow-md);
+  --shadow-hard-lg: var(--shadow-lg);
+  --shadow-hard-xl: var(--shadow-xl);
+}
+
+@layer base {
+  * , *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    width: 100%;
+    height: 100%;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: none;
+  }
+
+  body {
+    width: 100%;
+    min-height: 100dvh;
+    margin: 0;
+    overflow-x: clip;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    font-family: var(--font-sans);
+    color: var(--foreground);
+    background-color: var(--background);
+    font-size: 16px;
+    line-height: 1.5;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  ::selection {
+    background: var(--lime);
+    color: var(--ink);
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100dvh;
+  }
+
+  img, video, svg, canvas, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  /* Désactive la sélection de texte sur les boutons et la barre de navigation */
+  button, a, [role="button"], nav {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Empêche le zoom automatique sur iOS (taille 16px) */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* Supprime le délai de 300ms au tap et empêche le zoom au double tap */
+  button, a, [role="button"], input, select, textarea, label {
+    touch-action: manipulation;
+  }
+
+  /* Cible tactile minimale de 44px pour l'ergonomie mobile */
+  button, [role="button"] {
+    min-height: 44px;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--violet);
+    outline-offset: 2px;
+  }
+}
+
+/* Élément « pressable » : se soulève au survol, s'enfonce au clic (ombre dure qui suit) */
+@utility press {
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+  &:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-lg);
+  }
+  &:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 var(--ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover:not(:disabled), &:active:not(:disabled) {
+      transform: none;
+    }
+  }
+}
+
+/* Papier pointillé pour les grands fonds */
+@utility bg-dots {
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(17, 17, 17, 0.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Surlignage façon marqueur derrière un mot */
+@utility marker {
+  background: var(--lime);
+  padding: 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Remplacement de 100vh par 100dvh pour éviter les sauts au déploiement du clavier mobile */
+.min-h-screen {
+  min-height: 100dvh !important;
+}
+
+.h-screen {
+  height: 100dvh !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-shift {
+  background-size: 200% auto;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes shimmerGlint {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  35%, 100% {
+    transform: translateX(350%) skewX(-20deg);
+  }
+}
+
+.animate-glint {
+  animation: shimmerGlint 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.animate-wiggle {
+  animation: wiggle 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wiggle, .animate-glint, .animate-gradient-shift {
+    animation: none;
+  }
+}
+
+/* Barres de défilement */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+  border-radius: 9999px;
+  border: 2px solid var(--paper);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--violet);
+}
+
+/* Utilitaires éditoriaux */
+.leading-display {
+  line-height: 0.92 !important;
+}
+
+.stroke-num {
+  -webkit-text-stroke: 2px var(--ink);
+  color: transparent;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stroke-num.is-active {
+  color: var(--lime);
+  -webkit-text-stroke: 2px var(--ink);
+}
+
+.sticker-badge {
+  transform: rotate(-6deg);
+  box-shadow: var(--shadow-md);
+}

@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="icon512-grad" x1="50" y1="50" x2="462" y2="462" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#BE185D" />
+      <stop offset="55%" stopColor="#7C3AED" />
+      <stop offset="100%" stopColor="#D4A24C" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#FDF2F8"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" stroke="#F3D3E4" stroke-width="16"/>
+  <g transform="translate(106, 106) scale(3)">
+    <path d="M 32 25 L 32 75" stroke="url(#icon512-grad)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 32 25 C 56 22, 68 34, 58 48 C 48 58, 33 54, 32 54" stroke="url(#icon512-grad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M 48 50 L 68 75" stroke="url(#icon512-grad)" stroke-width="8" stroke-linecap="round"/>
+    <line x1="45" y1="32" x2="55" y2="34" stroke="#D4A24C" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="43" y1="40" x2="54" y2="42" stroke="#D4A24C" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="48" cy="50" r="4.5" fill="#D4A24C"/>
+  </g>
+</svg>
