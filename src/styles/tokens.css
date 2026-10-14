@@ -1,0 +1,38 @@
+/* Identité néo-brutale RDV Salon : encre noire, papier crème, aplats acidulés. */
+:root {
+  /* Palette de base */
+  --ink: #111111;
+  --paper: #FFFDF5;
+  --lime: #C6F432;
+  --candy: #FF8AD8;
+  --sun: #FFD23F;
+  --violet: #6A4CF5;
+
+  /* Rôles */
+  --background: var(--paper);
+  --surface: #FFFFFF;
+  --surface-alt: #F4F0E3;
+  --foreground: var(--ink);
+  --muted-foreground: #55524A;
+  --border: var(--ink);
+  --primary: var(--violet);
+  --primary-hover: #5536E0;
+  --accent: #D9258A;
+  --gold: #F5B700;
+  --success: #1F8A4C;
+  --destructive: #E5322D;
+  --ring: var(--violet);
+  --dark-section: var(--ink);
+  --dark-section-text: var(--paper);
+  --surface-cream: #FFF4CC;
+  --surface-cream-alt: #FFE99A;
+
+  /* Ombres dures décalées, sans flou */
+  --shadow-sm: 2px 2px 0 0 var(--ink);
+  --shadow-md: 4px 4px 0 0 var(--ink);
+  --shadow-lg: 6px 6px 0 0 var(--ink);
+  --shadow-xl: 10px 10px 0 0 var(--ink);
+
+  --radius-card: 18px;
+  --radius-btn: 9999px;
+}
