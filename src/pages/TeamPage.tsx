@@ -60,6 +60,8 @@ export const TeamPage: React.FC = () => {
   const [empModalOpen, setEmpModalOpen] = useState(false);
   const [editingEmp, setEditingEmp] = useState<Employe | null>(null);
   const [congeModalOpen, setCongeModalOpen] = useState(false);
+  // Empêche le double-clic de créer deux fois la même fiche ou la même absence
+  const [enregistrement, setEnregistrement] = useState(false);
 
   // Form states Employé
   const [empNom, setEmpNom] = useState('');
@@ -132,7 +134,9 @@ export const TeamPage: React.FC = () => {
       error('Le nom est requis');
       return;
     }
+    if (enregistrement) return;
 
+    setEnregistrement(true);
     try {
       const saved = await repository.saveEmploye({
         id: editingEmp?.id,
@@ -150,6 +154,8 @@ export const TeamPage: React.FC = () => {
       setSelectedEmpId(saved.id);
     } catch (err: any) {
       error(err?.message || 'Erreur lors de la sauvegarde');
+    } finally {
+      setEnregistrement(false);
     }
   };
 
@@ -218,7 +224,9 @@ export const TeamPage: React.FC = () => {
       error('La date de fin doit être après la date de début');
       return;
     }
+    if (enregistrement) return;
 
+    setEnregistrement(true);
     try {
       await repository.saveConge({
         salon_id: salon.id,
@@ -236,6 +244,8 @@ export const TeamPage: React.FC = () => {
       await loadData();
     } catch {
       error('Erreur lors de l’enregistrement du congé');
+    } finally {
+      setEnregistrement(false);
     }
   };
 
@@ -594,7 +604,8 @@ export const TeamPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 min-h-[44px] text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors shadow-hard-sm"
+                  disabled={enregistrement}
+                  className="flex-1 py-2.5 min-h-[44px] text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors shadow-hard-sm disabled:opacity-60 disabled:cursor-wait"
                 >
                   Enregistrer
                 </button>
@@ -672,7 +683,8 @@ export const TeamPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 min-h-[44px] text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors shadow-hard-sm"
+                  disabled={enregistrement}
+                  className="flex-1 py-2.5 min-h-[44px] text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors shadow-hard-sm disabled:opacity-60 disabled:cursor-wait"
                 >
                   Valider l'absence
                 </button>

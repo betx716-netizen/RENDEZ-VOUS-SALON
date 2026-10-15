@@ -12,9 +12,8 @@ export const BookingSteps: React.FC<BookingStepsProps> = ({
 }) => {
   const steps = [
     { number: 1, label: 'Prestation' },
-    { number: 2, label: 'Coiffeur(se)' },
-    { number: 3, label: 'Date & heure' },
-    { number: 4, label: 'Vos infos' },
+    { number: 2, label: 'Date & heure' },
+    { number: 3, label: 'Vos infos' },
   ];
 
   return (

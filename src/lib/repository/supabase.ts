@@ -454,7 +454,8 @@ export const supabaseRepository: Repository = {
       const { data, error } = await db().rpc('creer_reservation_publique', {
         p_salon_id: params.salonId,
         p_service_id: params.serviceId,
-        p_employe_id: isUuid(params.employeId) ? params.employeId : null,
+        // La cliente ne choisit plus sa coiffeuse : le serveur attribue une coiffeuse libre et qualifiée
+        p_employe_id: null,
         p_debut: params.debut,
         p_client_nom: params.clientNom.trim(),
         p_client_telephone: params.clientTelephone.trim(),

@@ -129,7 +129,8 @@ export const PublicBookingPage: React.FC = () => {
 
   // Sélections utilisateur
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [selectedEmployeId, setSelectedEmployeId] = useState<string>('any'); // 'any' ou ID
+  // La cliente ne choisit pas sa coiffeuse : tout créneau où au moins une coiffeuse est libre est proposé
+  const selectedEmployeId = 'any';
   const [selectedDate, setSelectedDate] = useState<Date>(salonToday());
   const [availableSlots, setAvailableSlots] = useState<CalculatedSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<CalculatedSlot | null>(null);
@@ -318,20 +319,20 @@ export const PublicBookingPage: React.FC = () => {
     }
   };
 
+  // Étapes : 1 prestation, 3 date & heure, 4 coordonnées (l'étape 2, choix de la coiffeuse, n'existe plus)
   const nextStep = () => {
-    if (step === 1 && selectedService) setStep(2);
-    else if (step === 2) setStep(3);
+    if (step === 1 && selectedService) setStep(3);
     else if (step === 3 && selectedSlot) setStep(4);
     else if (step === 4) handleConfirmBooking();
   };
 
   const prevStep = () => {
-    if (step > 1) setStep(step - 1);
+    if (step === 4) setStep(3);
+    else if (step === 3) setStep(1);
   };
 
   const canContinue =
     (step === 1 && !!selectedService) ||
-    step === 2 ||
     (step === 3 && !!selectedSlot) ||
     step === 4;
 
@@ -357,8 +358,8 @@ export const PublicBookingPage: React.FC = () => {
           <>
             {/* BARRE DE PROGRESSION EN 4 ÉTAPES */}
             <BookingSteps
-              currentStep={step}
-              onStepClick={(s) => setStep(s)}
+              currentStep={step === 1 ? 1 : step === 3 ? 2 : 3}
+              onStepClick={(s) => setStep(s === 1 ? 1 : 3)}
             />
 
             {/* CONTENU ANIMÉ DE L'ÉTAPE COURANTE (GLISSEMENT DOUX & SWIPE TACTILE) */}
@@ -448,95 +449,6 @@ export const PublicBookingPage: React.FC = () => {
                       })}
                     </section>
                   ))}
-                </motion.div>
-              )}
-
-              {/* ÉTAPE 2 : CHOIX DU COIFFEUR / PRATICIEN */}
-              {step === 2 && (
-                <motion.div
-                  key="step-2"
-                  initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="space-y-5"
-                >
-                  <StepTitle
-                    title="Avec qui ?"
-                    backLabel="Changer de prestation"
-                    onBack={prevStep}
-                  />
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Option Sans préférence */}
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      aria-pressed={selectedEmployeId === 'any'}
-                      onClick={() => setSelectedEmployeId('any')}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          setSelectedEmployeId('any');
-                        }
-                      }}
-                      className={`p-5 rounded-[18px] text-left sm:col-span-2 ${selectableCard(selectedEmployeId === 'any')}`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-candy text-ink border-2 border-ink flex items-center justify-center shrink-0">
-                          <Sparkles className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-base text-ink">
-                            Premier disponible
-                          </div>
-                          <div className="text-sm text-ink/70 mt-0.5">
-                            Recommandé pour avoir le plus de choix
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Liste des employes */}
-                    {employes.map((emp) => {
-                      const isSelected = selectedEmployeId === emp.id;
-                      return (
-                        <div
-                          key={emp.id}
-                          role="button"
-                          tabIndex={0}
-                          aria-pressed={isSelected}
-                          onClick={() => setSelectedEmployeId(emp.id)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              setSelectedEmployeId(emp.id);
-                            }
-                          }}
-                          className={`p-5 rounded-[18px] text-left ${selectableCard(isSelected)}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-base shrink-0 text-white border-2 border-ink"
-                              style={{ backgroundColor: emp.couleur_calendrier || emp.couleur_agenda || '#6A4CF5' }}
-                            >
-                              {(emp.prenom || emp.nom || 'E')[0]}
-                            </div>
-                            <div>
-                              <div className="font-bold text-base text-ink">
-                                {emp.prenom ? `${emp.prenom} ${emp.nom}` : emp.nom}
-                              </div>
-                              <div className="text-sm text-ink/70 mt-0.5">
-                                {emp.specialites && emp.specialites.length > 0
-                                  ? emp.specialites.join(', ')
-                                  : 'Coiffeuse / Praticienne'}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
                 </motion.div>
               )}
 
